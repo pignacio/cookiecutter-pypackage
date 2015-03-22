@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=protected-access,invalid-name
 
 """
 test_{{ cookiecutter.repo_name }}
@@ -23,6 +24,7 @@ class Test{{ cookiecutter.repo_name|capitalize }}(unittest.TestCase):
 
     def tearDown(self):
         pass
+
 
 if __name__ == '__main__':
     unittest.main()
