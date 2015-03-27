@@ -6,9 +6,9 @@ help:
 	@echo "clean-pyc - remove Python file artifacts"
 	@echo "clean-test - remove test and coverage artifacts"
 	@echo "lint - check style with pylint"
-	@echo "test - run tests quickly with the default Python"
+	@echo "test - run tests quickly with nosetests"
 	@echo "test-all - run tests on every Python version with tox"
-	@echo "coverage - check code coverage quickly with the default Python"
+	@echo "coverage - check code coverage quickly with nosetests"
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
 	@echo "release - package and upload a release"
 	@echo "dist - package"
@@ -35,21 +35,39 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
+	@if ! which pep8 >/dev/null; then echo "pep8 not installed.\nRun:\n    pip install pep8" && false; fi
+	@if ! which pylint >/dev/null; then echo "pylint not installed.\nRun:\n    pip install pylint" && false; fi
+	-pep8 {{ cookiecutter.repo_name }} tests
 	pylint {{ cookiecutter.repo_name }} tests
 
-test:
-	python setup.py test
+test: test-deps
+	python setup.py nosetests
 
-test-all:
+test-cover: test-deps
+	python setup.py nosetests --with-coverage --cover-package={{ cookiecutter.repo_name }}
+
+test-all: test-deps
+	@if ! which tox >/dev/null; then echo "tox not installed.\nRun:\n    pip install tox" && false; fi
 	tox
 
-coverage:
-	coverage run --source {{ cookiecutter.repo_name }} setup.py test
-	coverage report -m
+test-deps:
+	pip install -r test_requirements.txt
+
+coverage: test-deps
+	coverage run --source {{ cookiecutter.repo_name }} setup.py nosetests
+	coverage report
+	coverage html
+	see htmlcov/index.html
+
+coverage-all:
+	coverage erase
+	make test-all
+	coverage report
 	coverage html
 	see htmlcov/index.html
 
 docs:
+	@if ! which sphinx-apidoc >/dev/null; then echo "sphinx not installed.\nRun:\n    pip install sphinx" && false; fi
 	rm -f docs/{{ cookiecutter.repo_name }}.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ {{ cookiecutter.repo_name }}
