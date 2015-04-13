@@ -76,9 +76,9 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.repo_name }}` for loc
 
 5. When you're done making changes, check that your changes pass pylint and the tests, including testing other Python versions with tox::
 
-    $ pylint {{ cookiecutter.repo_name }} tests
-    $ python setup.py test
-    $ tox
+    $ make lint
+    $ make test  # Test current python version
+    $ make test-all  # Tests all python versions with tox
 
    To get pylint and tox, just pip install them into your virtualenv.
 
@@ -108,4 +108,4 @@ Tips
 
 To run a subset of tests::
 
-    $ python -m unittest tests.test_{{ cookiecutter.repo_name }}
+    $ python setup.py nosetests --tests tests/test_{{ cookiecutter.repo_name }}
