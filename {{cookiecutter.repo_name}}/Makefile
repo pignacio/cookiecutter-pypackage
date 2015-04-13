@@ -78,13 +78,17 @@ docs: docs-deps
 docs-deps:
 	pip install -r requirements/docs.txt
 
+release: clean dist-deps
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 
-dist: clean
+dist: clean dist-deps
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
+
+dist-deps:
+	pip install -r requirements/dist.txt
 
 install: clean
 	python setup.py install
