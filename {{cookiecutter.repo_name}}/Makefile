@@ -40,20 +40,20 @@ lint:
 	-pep8 {{ cookiecutter.repo_name }} tests
 	pylint {{ cookiecutter.repo_name }} tests
 
-test: test-deps
+test: test-deps clean-pyc
 	python setup.py nosetests
 
-test-cover: test-deps
+test-cover: test-deps clean-pyc
 	python setup.py nosetests --with-coverage --cover-package={{ cookiecutter.repo_name }}
 
-test-all: test-deps
+test-all: test-deps clean-pyc
 	@if ! which tox >/dev/null; then echo "tox not installed.\nRun:\n    pip install tox" && false; fi
 	tox
 
 test-deps:
 	pip install -r requirements/test.txt
 
-coverage: test-deps
+coverage: test-deps clean-pyc
 	coverage run --source {{ cookiecutter.repo_name }} setup.py nosetests
 	make coverage-show
 
