@@ -67,8 +67,7 @@ coverage-show:
 	coverage html
 	see htmlcov/index.html
 
-docs:
-	@if ! which sphinx-apidoc >/dev/null; then echo "sphinx not installed.\nRun:\n    pip install sphinx" && false; fi
+docs: docs-deps
 	rm -f docs/{{ cookiecutter.repo_name }}.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ {{ cookiecutter.repo_name }}
@@ -76,7 +75,9 @@ docs:
 	$(MAKE) -C docs html
 	see docs/_build/html/index.html
 
-release: clean
+docs-deps:
+	pip install -r requirements/docs.txt
+
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 
