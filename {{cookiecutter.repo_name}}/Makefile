@@ -92,3 +92,6 @@ dist-deps:
 
 install: clean
 	python setup.py install
+
+yapf:
+	find {{ cookiecutter.repo_name }} -name "*.py" -exec echo {} \; -exec yapf --diff {} \;
