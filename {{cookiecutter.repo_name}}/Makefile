@@ -51,7 +51,7 @@ test-all: test-deps
 	tox
 
 test-deps:
-	pip install -r test_requirements.txt
+	pip install -r requirements/test.txt
 
 coverage: test-deps
 	coverage run --source {{ cookiecutter.repo_name }} setup.py nosetests
