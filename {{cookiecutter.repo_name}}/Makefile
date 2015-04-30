@@ -38,7 +38,8 @@ lint:
 	@if ! which pep8 >/dev/null; then echo "pep8 not installed.\nRun:\n    pip install pep8" && false; fi
 	@if ! which pylint >/dev/null; then echo "pylint not installed.\nRun:\n    pip install pylint" && false; fi
 	-pep8 {{ cookiecutter.repo_name }} tests
-	pylint {{ cookiecutter.repo_name }} tests
+	-find {{ cookiecutter.repo_name }} -name "*.py" -exec pylint {} +
+	-find tests -name "*.py" -exec pylint {} +
 
 test: test-deps clean-pyc
 	python setup.py nosetests
